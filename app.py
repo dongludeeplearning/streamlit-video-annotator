@@ -19,6 +19,25 @@ def load_video_tasks():
 video_tasks = load_video_tasks()
 DB_FILE = "results.db"
 
+# ✅ Ensure the database and table exist
+def init_db():
+    conn = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS annotations (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            email TEXT NOT NULL,
+            video_id TEXT NOT NULL,
+            description TEXT,
+            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
+    conn.commit()
+    conn.close()
+
+# 🚀 Run DB initializer once
+init_db()
+
 # ✅ Start app
 st.title("🎬 Video Annotation Task")
 email = st.text_input("Enter your email:")
