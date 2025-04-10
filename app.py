@@ -39,7 +39,7 @@ def init_db():
 init_db()
 
 # ✅ Start app
-st.title("🎬 Video Annotation Task")
+st.title("🎬 Video Description Task")
 email = st.text_input("Enter your email:")
 
 if not email:
