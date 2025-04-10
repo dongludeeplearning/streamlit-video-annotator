@@ -55,6 +55,26 @@ if email.strip().lower() == ADMIN_EMAIL:
 
     csv = df.to_csv(index=False).encode("utf-8")
     st.download_button("📥 Download All Submissions", csv, "all_annotations.csv", "text/csv")
+    
+    # ✅ 新增：删除指定用户的数据
+    st.markdown("---")
+    st.subheader("🧹 Delete User Data")
+    target_email = st.text_input("Enter the email of the user to delete all submissions for:")
+
+    if st.button("Delete This User's Data"):
+        if target_email.strip() == "":
+            st.warning("Please enter a valid email.")
+        else:
+            conn = sqlite3.connect(DB_FILE)
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM annotations WHERE email = ?", (target_email.strip(),))
+            conn.commit()
+            conn.close()
+            st.success(f"✅ All data for {target_email.strip()} has been deleted.")
+            st.rerun()
+
+
+
     st.stop()
 
 # ✅ Student mode
@@ -81,7 +101,10 @@ for item in video_tasks[email]:
 if next_video:
     st.subheader(f"Video_ID: {next_video['id']}")
     st.components.v1.iframe(next_video["url"], height=360)
-    desc = st.text_area("Please provide a detailed description of the motion, with particular focus on the handshape, palm orientation, movement trajectory, and spatial location.", height=100)
+    desc = st.text_area("Please provide a detailed description of the motion, " \
+    "with particular focus on the handshape, palm orientation, movement trajectory, and spatial location.", height=100, key="description_box", \
+    value=st.session_state.get("description_box", ""))
+   
 
     if st.button("Submit"):
         if desc.strip() == "":
@@ -94,6 +117,10 @@ if next_video:
             conn.commit()
             conn.close()
             st.success("✅ Submitted!")
+
+            if "description_box" in st.session_state:
+                del st.session_state["description_box"]
+
             st.rerun()
 else:
     st.balloons()
