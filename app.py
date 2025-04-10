@@ -81,7 +81,7 @@ for item in video_tasks[email]:
 if next_video:
     st.subheader(f"Task: {next_video['id']}")
     st.components.v1.iframe(next_video["url"], height=360)
-    desc = st.text_area("Write your description:", height=100)
+    desc = st.text_area("Please provide a detailed description of the motion, with particular focus on the handshape, palm orientation, movement trajectory, and spatial location.", height=100)
 
     if st.button("Submit"):
         if desc.strip() == "":
