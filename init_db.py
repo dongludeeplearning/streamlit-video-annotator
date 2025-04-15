@@ -18,4 +18,4 @@ cursor.execute("""
 conn.commit()
 conn.close()
 
-print("✅ Database 'results.db' created.")
+print("Database 'results.db' created.")
