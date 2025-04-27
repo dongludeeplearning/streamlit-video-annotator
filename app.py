@@ -13,7 +13,7 @@ ADMIN_EMAIL = "admin@buffalo.edu"
 # Load tasks
 @st.cache_data
 def load_video_tasks():
-    with open("video_assignment.json", "r") as f:
+    with open("video_assignment_with_guest.json", "r") as f:
         return json.load(f)
 
 # video_tasks = load_video_tasks()
